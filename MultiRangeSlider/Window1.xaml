@@ -1,0 +1,22 @@
+﻿<Window x:Class="MultiRangeSlider.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:MultiRangeSlider"
+    Title="Window1" Height="300" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <local:MultiRangeSliderControl Grid.ColumnSpan="3" x:Name="t" />
+        
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ElementName=t, Path=Value1}" /> 
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ElementName=t, Path=Value2}" /> 
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ElementName=t, Path=Value3}" />
+    </Grid>
+</Window>
