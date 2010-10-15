@@ -11,14 +11,66 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace MultiRangeSlider {
   /// <summary>
   /// Interaction logic for MultiRangeSliderControl.xaml
   /// </summary>
-  public partial class MultiRangeSliderControl : UserControl {
+  public partial class MultiRangeSliderControl : UserControl, INotifyPropertyChanged {
     public MultiRangeSliderControl() {
       InitializeComponent();
+      Loaded += new RoutedEventHandler(MultiRangeSliderControl_Loaded);
+    }
+
+    void MultiRangeSliderControl_Loaded(object sender, RoutedEventArgs e) {
+      OnPropertyChanged(string.Empty);
+    }
+
+    public Thickness Range1Margin {
+      get {
+        double range = Maximum - Minimum;
+        var renderSize = Value1Slider.RenderSize;
+        double ratio = renderSize.Width / range;
+
+        double right = Value1 * ratio;
+        return new Thickness(0, 0, renderSize.Width - right, 0);
+      }
+    }
+
+    public Thickness Range2Margin {
+      get {
+        double range = Maximum - Minimum;
+        var renderSize = Value1Slider.RenderSize;
+        double ratio = renderSize.Width / range;
+
+        double left = Value1 * ratio;
+        double right = Value2 * ratio;
+        return new Thickness(left, 0, renderSize.Width - right, 0);
+      }
+    }
+
+    public Thickness Range3Margin {
+      get {
+        double range = Maximum - Minimum;
+        var renderSize = Value1Slider.RenderSize;
+        double ratio = renderSize.Width / range;
+
+        double left = Value2 * ratio;
+        double right = Value3 * ratio;
+        return new Thickness(left, 0, renderSize.Width - right, 0);
+      }
+    }
+
+    public Thickness Range4Margin {
+      get {
+        double range = Maximum - Minimum;
+        var renderSize = Value1Slider.RenderSize;
+        double ratio = renderSize.Width / range;
+
+        double left = Value3 * ratio;
+        return new Thickness(left, 0, 0, 0);
+      }
     }
 
     public double Minimum {
@@ -35,7 +87,7 @@ namespace MultiRangeSlider {
     }
 
     public static readonly DependencyProperty Value1Property =
-        DependencyProperty.Register("Value1", typeof(double), typeof(MultiRangeSliderControl), new FrameworkPropertyMetadata(0d, Value1Changed, CoerceValue1));
+        DependencyProperty.Register("Value1", typeof(double), typeof(MultiRangeSliderControl), new FrameworkPropertyMetadata(4d, Value1Changed, CoerceValue1));
 
     public double Value2 {
       get { return (double)GetValue(Value2Property); }
@@ -43,7 +95,7 @@ namespace MultiRangeSlider {
     }
 
     public static readonly DependencyProperty Value2Property =
-        DependencyProperty.Register("Value2", typeof(double), typeof(MultiRangeSliderControl), new FrameworkPropertyMetadata(0d, Value2Changed, CoerceValue2));
+        DependencyProperty.Register("Value2", typeof(double), typeof(MultiRangeSliderControl), new FrameworkPropertyMetadata(6d, Value2Changed, CoerceValue2));
 
     public double Value3 {
       get { return (double)GetValue(Value3Property); }
@@ -51,7 +103,7 @@ namespace MultiRangeSlider {
     }
 
     public static readonly DependencyProperty Value3Property =
-        DependencyProperty.Register("Value3", typeof(double), typeof(MultiRangeSliderControl), new FrameworkPropertyMetadata(0d, Value3Changed, CoerceValue3));
+        DependencyProperty.Register("Value3", typeof(double), typeof(MultiRangeSliderControl), new FrameworkPropertyMetadata(8d, Value3Changed, CoerceValue3));
 
 
     public double Maximum {
@@ -60,23 +112,32 @@ namespace MultiRangeSlider {
     }
 
     public static readonly DependencyProperty MaximumProperty =
-        DependencyProperty.Register("Maximum", typeof(double), typeof(MultiRangeSliderControl), new UIPropertyMetadata(1d));
+        DependencyProperty.Register("Maximum", typeof(double), typeof(MultiRangeSliderControl), new UIPropertyMetadata(10d));
 
 
     private void LimitValue1(object sender, LimitEventArgs e) {
       var v = (double)e.Value;
       if (v > Value2) e.Value = Value2;
+
+      OnPropertyChanged("Range1Margin");
+      OnPropertyChanged("Range2Margin");
     }
 
     private void LimitValue2(object sender, LimitEventArgs e) {
       var v = (double)e.Value;
       if (v > Value3) e.Value = Value3;
       else if (v < Value1) e.Value = Value1;
+
+      OnPropertyChanged("Range2Margin");
+      OnPropertyChanged("Range3Margin");
     }
 
     private void LimitValue3(object sender, LimitEventArgs e) {
       var v = (double)e.Value;
       if (v < Value2) e.Value = Value2;
+
+      OnPropertyChanged("Range3Margin");
+      OnPropertyChanged("Range4Margin");
     }
 
 
@@ -117,5 +178,15 @@ namespace MultiRangeSlider {
       if (v < self.Value2) return self.Value2;
       else return baseValue;
     }
+
+    #region INotifyPropertyChanged Members
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    private void OnPropertyChanged(string name) {
+      var h = PropertyChanged;
+      if (h != null) h(this, new PropertyChangedEventArgs(name));
+    }
+    #endregion
   }
 }

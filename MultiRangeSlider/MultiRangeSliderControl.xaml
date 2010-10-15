@@ -17,7 +17,41 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Rectangle x:Name="PART_SelectionRange"/>
+                    <Canvas Grid.Row="1">
+                        <Rectangle x:Name="PART_SelectionRange" Fill="Red" Height="18"/>
+                    </Canvas>
+
+                    <Track x:Name="PART_Track" Grid.Row="1">
+                        <Track.Thumb>
+                            <Thumb x:Name="Thumb" Width="10" Height="18" Background="{TemplateBinding Background}">
+                                <!--<Thumb.Template>
+                                    <ControlTemplate TargetType="Thumb">
+                                        <Rectangle Fill="Red" 
+                                    Stroke="Black"
+                                    StrokeThickness="1" 
+                                    Width="10"
+                                    Height="18"
+                                    SnapsToDevicePixels="True"/>
+                                    </ControlTemplate>
+                                </Thumb.Template>-->
+                            </Thumb>
+                        </Track.Thumb>
+                    </Track>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+        <ControlTemplate x:Key="StripedSlider_original" TargetType="{x:Type Slider}">
+            <Border SnapsToDevicePixels="true" 
+            BorderBrush="{TemplateBinding BorderBrush}" 
+            BorderThickness="{TemplateBinding BorderThickness}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Rectangle x:Name="PART_SelectionRange" Fill="Red"/>
 
                     <Track x:Name="PART_Track" Grid.Row="1">
                         <Track.Thumb>
@@ -39,22 +73,29 @@
             </Border>
         </ControlTemplate>
     </UserControl.Resources>
-    <Grid>
-        <l:LimitedSlider x:Name="Value1Slider"
+    <Border CornerRadius="10" BorderBrush="Green" BorderThickness="2" Padding="2">
+        <Grid>
+
+            <Border Background="Green" Height="18" Margin="{Binding Range1Margin}" CornerRadius="10,0,0,10" />
+            <Border Background="Pink" Height="18" Margin="{Binding Range2Margin}" />
+            <Border Background="Red" Height="18" Margin="{Binding Range3Margin}" />
+            <Border Background="RoyalBlue" Height="18" Margin="{Binding Range4Margin}" CornerRadius="0,10,10,0" />
+
+            <l:LimitedSlider x:Name="Value1Slider"
             Minimum="{Binding Path=Minimum}"
             Maximum="{Binding Path=Maximum}"
             Value="{Binding Path=Value1, Mode=TwoWay}"
             LimitValue="LimitValue1"
             Background="Green" 
             Template="{StaticResource StripedSlider}"/>
-        <l:LimitedSlider x:Name="Value2Slider"
+            <l:LimitedSlider x:Name="Value2Slider"
             Minimum="{Binding Path=Minimum}"
             Maximum="{Binding Path=Maximum}"
             Value="{Binding Path=Value2, Mode=TwoWay}" 
             LimitValue="LimitValue2"
             Background="Yellow"
             Template="{StaticResource StripedSlider}" />
-        <l:LimitedSlider x:Name="Value3Slider"
+            <l:LimitedSlider x:Name="Value3Slider"
             Minimum="{Binding Path=Minimum}"
             Maximum="{Binding Path=Maximum}"
             Value="{Binding Path=Value3, Mode=TwoWay}" 
@@ -62,5 +103,7 @@
             Background="Blue"
             Template="{StaticResource StripedSlider}"
              />
-    </Grid>
+
+        </Grid>
+    </Border>
 </UserControl>
