@@ -5,7 +5,8 @@
     Title="Window1" Height="300" Width="300">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -18,5 +19,9 @@
         <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ElementName=t, Path=Value1}" /> 
         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ElementName=t, Path=Value2}" /> 
         <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ElementName=t, Path=Value3}" />
+        
+        <Slider Grid.Row="2" Grid.ColumnSpan="3" TickPlacement="BottomRight" TickFrequency="1"
+                Minimum="10" Maximum="30" Value="15"
+                IsSelectionRangeEnabled="True" SelectionStart="15" SelectionEnd="25" />
     </Grid>
 </Window>

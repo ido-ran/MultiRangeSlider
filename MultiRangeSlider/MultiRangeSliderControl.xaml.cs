@@ -62,6 +62,24 @@ namespace MultiRangeSlider {
     public static readonly DependencyProperty MaximumProperty =
         DependencyProperty.Register("Maximum", typeof(double), typeof(MultiRangeSliderControl), new UIPropertyMetadata(1d));
 
+
+    private void LimitValue1(object sender, LimitEventArgs e) {
+      var v = (double)e.Value;
+      if (v > Value2) e.Value = Value2;
+    }
+
+    private void LimitValue2(object sender, LimitEventArgs e) {
+      var v = (double)e.Value;
+      if (v > Value3) e.Value = Value3;
+      else if (v < Value1) e.Value = Value1;
+    }
+
+    private void LimitValue3(object sender, LimitEventArgs e) {
+      var v = (double)e.Value;
+      if (v < Value2) e.Value = Value2;
+    }
+
+
     private static void Value1Changed(DependencyObject d, DependencyPropertyChangedEventArgs e) {
       var self = (MultiRangeSliderControl)d;
       self.CoerceValue(Value2Property);

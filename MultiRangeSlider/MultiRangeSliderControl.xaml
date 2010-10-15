@@ -2,7 +2,9 @@
     x:Name="root"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    MinWidth="50">
+    xmlns:l="clr-namespace:MultiRangeSlider"
+    MinWidth="50"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.Resources>
         <ControlTemplate x:Key="StripedSlider" TargetType="{x:Type Slider}">
             <Border SnapsToDevicePixels="true" 
@@ -38,23 +40,27 @@
         </ControlTemplate>
     </UserControl.Resources>
     <Grid>
-        <Slider x:Name="Value1Slider"
-            Minimum="{Binding ElementName=root, Path=Minimum}"
-            Maximum="{Binding ElementName=root, Path=Maximum}"
-            Value="{Binding ElementName=root, Path=Value1, Mode=TwoWay}"
-            Background="Green"
-            Template="{StaticResource StripedSlider}" />
-        <Slider x:Name="Value2Slider"
-            Minimum="{Binding ElementName=root, Path=Minimum}"
-            Maximum="{Binding ElementName=root, Path=Maximum}"
-            Value="{Binding ElementName=root, Path=Value2, Mode=TwoWay}" 
+        <l:LimitedSlider x:Name="Value1Slider"
+            Minimum="{Binding Path=Minimum}"
+            Maximum="{Binding Path=Maximum}"
+            Value="{Binding Path=Value1, Mode=TwoWay}"
+            LimitValue="LimitValue1"
+            Background="Green" 
+            Template="{StaticResource StripedSlider}"/>
+        <l:LimitedSlider x:Name="Value2Slider"
+            Minimum="{Binding Path=Minimum}"
+            Maximum="{Binding Path=Maximum}"
+            Value="{Binding Path=Value2, Mode=TwoWay}" 
+            LimitValue="LimitValue2"
             Background="Yellow"
             Template="{StaticResource StripedSlider}" />
-        <Slider x:Name="Value3Slider"
-            Minimum="{Binding ElementName=root, Path=Minimum}"
-            Maximum="{Binding ElementName=root, Path=Maximum}"
-            Value="{Binding ElementName=root, Path=Value3, Mode=TwoWay}" 
+        <l:LimitedSlider x:Name="Value3Slider"
+            Minimum="{Binding Path=Minimum}"
+            Maximum="{Binding Path=Maximum}"
+            Value="{Binding Path=Value3, Mode=TwoWay}" 
+            LimitValue="LimitValue3"
             Background="Blue"
-            Template="{StaticResource StripedSlider}" />
+            Template="{StaticResource StripedSlider}"
+             />
     </Grid>
 </UserControl>
